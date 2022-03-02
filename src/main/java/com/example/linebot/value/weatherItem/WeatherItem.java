@@ -7,22 +7,18 @@ import com.fasterxml.jackson.databind.annotation.JsonNaming;
 
 import java.util.List;
 
-// JSONデータの日毎のデータをデシリアライズするマッピング用クラス
-// JsonNaming: スネークケース abc_de のキーと、キャメルケース abcDe のフィールド名をマッピングする設定
 @JsonIgnoreProperties(ignoreUnknown = true)
 @JsonNaming(PropertyNamingStrategies.SnakeCaseStrategy.class)
 public class WeatherItem {
 
     private final List<Weather> weather; // 天気
     private final Main main;             // 気温など
-    private final Wind wind;             // 風
     private String name;                 // 地名
 
     @JsonCreator
-    public WeatherItem(List<Weather> weather, Main main, Wind wind, String name) {
+    public WeatherItem(List<Weather> weather, Main main, String name) {
         this.weather = weather;
         this.main = main;
-        this.wind = wind;
         this.name = name;
     }
 
@@ -32,10 +28,6 @@ public class WeatherItem {
 
     public Main getMain() {
         return main;
-    }
-
-    public Wind getWind() {
-        return wind;
     }
 
     public String getName() {

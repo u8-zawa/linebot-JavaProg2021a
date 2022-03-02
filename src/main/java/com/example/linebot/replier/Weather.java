@@ -34,7 +34,7 @@ public class Weather implements Replier {
     public List<Message> reply() {
         String region = item.getName();
         String icon = item.getWeather().get(0).getIcon();
-        String main = item.getWeather().get(0).getMain();
+        String description = item.getWeather().get(0).getDescription();
         double tempMax = item.getMain().getTempMax();
         double tempMin = item.getMain().getTempMin();
         double humidity = item.getMain().getHumidity();
@@ -49,7 +49,7 @@ public class Weather implements Replier {
                 .size(Image.ImageSize.LG)
                 .build();
         Text weather = Text.builder()
-                .text(main)
+                .text(description)
                 .margin(FlexMarginSize.SM)
                 .flex(0)
                 .align(FlexAlign.CENTER)
