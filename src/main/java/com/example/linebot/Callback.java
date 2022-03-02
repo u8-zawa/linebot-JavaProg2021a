@@ -10,12 +10,15 @@ import com.linecorp.bot.model.event.UnfollowEvent;
 import com.linecorp.bot.model.event.message.LocationMessageContent;
 import com.linecorp.bot.model.event.message.TextMessageContent;
 import com.linecorp.bot.model.message.Message;
+import com.linecorp.bot.model.message.TextMessage;
 import com.linecorp.bot.spring.boot.annotation.EventMapping;
 import com.linecorp.bot.spring.boot.annotation.LineMessageHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.client.HttpClientErrorException;
 
+import java.util.Collections;
 import java.util.List;
 
 @LineMessageHandler
@@ -60,7 +63,13 @@ public class Callback {
                 Janken janken = new Janken();
                 return janken.reply();
             case WEATHER:
-                Weather weather = externalService.doReplyWithWeather(text);
+                Weather weather;
+                try {
+                    weather = externalService.doReplyWithWeather(text);
+                } catch (HttpClientErrorException e) {
+                    String message = "都市が見つかりませんでした。";
+                    return Collections.singletonList(new TextMessage(message));
+                }
                 return weather.reply();
             case UNKNOWN:
             default:
